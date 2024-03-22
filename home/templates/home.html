@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Django-Weather</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<style>
+    * {
+        box-sizing: inherit;
+    }
+    
+    html {
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: Helvetica;
+    }
+    
+    .content_wrapper {
+        padding: 3% 0;
+        margin: 0 auto;
+        width: 600px; /* Increased width */
+    }
+    
+    h1 {
+        font-weight: 600;
+        font-size: 30px;
+        margin-bottom: 20px;
+    }
+    
+    .weather_card {
+        display: flex;
+        border-radius: 10px;
+        width: 100%;
+        height: 200px; /* Increased height */
+        padding: 15px;
+        box-shadow: -5px 5px 15px 5px rgba(150, 150, 150, 0.2);
+    }
+    
+    .weather_card_img {
+        width: calc(200px - 15px); /* Adjusted width */
+        display: flex;
+        background-size: cover;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    .weather_card_state {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(2px);
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,.1);
+        color: #fff;
+        font-size: 50px;
+    }
+    
+    .weather_card_state .material-icons {
+        font-size: 50px;
+    }
+    
+    .weather_card_infos {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        padding-left: 15px;
+    }
+    
+    .weather_card_infos_title {
+        font-size: 20px; /* Adjusted font size */
+        font-weight: 300;
+        margin-bottom: 10px;
+    }
+    
+    .weather_card_infos_temp {
+        font-size: 22px;
+        font-weight: 300;
+        color: rgb(170,170,170);
+    }
+    
+    .date {
+        margin-top: 5px;
+        font-weight: 300;
+        display: flex;
+        align-items: flex-end;
+        flex-grow: 1;
+        font-size: 12px;
+    }
+    
+    hr {
+        width: 100%;
+        height: 1px;
+        background: rgba(100,100,100,.2);
+        border: none;
+    }
+    
+    .bottom {
+          flex-grow: 1;
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: column;
+    }
+    
+    .weather_card_infos_bottom {
+        font-size: 12px;
+        font-weight: 300;
+    }
+</style>
+<body>
+    <div class="content_wrapper" id="app">
+        <div v-if="infos.city">
+            <h1>
+                <center>Weather</center>
+                
+                <div class="date"></div>
+            </h1>
+
+            <div>
+                <center>
+                    <span style="color: red;">{{error_message}}</span>
+                </center>
+            </div>  
+
+            <br>
+
+            <center>
+                <form method="get">
+                    <input type="text" name="city" class="from-control" placeholder="Enter City Name">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </center>
+            {% if not error_message %}
+            
+            <br>
+            
+            <div class="weather_card">
+                <div class="weather_card_img" :style="{backgroundImage: http://openweathermap.org/img/wn/{{data.icon}}.png}">
+                    <div class="weather_card_state">
+                        <span class="material-icons">
+                            <img src="http://openweathermap.org/img/wn/{{data.icon}}.png">
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="weather_card_infos">
+                    <div class="weather_card_infos_title">
+                        {{ data.city }}
+                        <br>
+                        {{ data.description }}
+                    </div>
+                    <div class="weather_card_infos_temp">
+                        {{data.celcius_temperature}}°C / {{data.kelvin_temperature}}°K
+                    </div>
+                    <div class="bottom">
+                        <hr>
+                        <div class="weather_card_infos_bottom">
+                            humidity: {{data.humidity}} - pressure: {{data.pressure}} Pa
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
